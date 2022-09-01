@@ -72,6 +72,8 @@ int main(){
             break;
 
     }
+    
+    free(board);
 
 }
 
