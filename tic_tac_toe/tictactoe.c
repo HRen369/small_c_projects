@@ -1,3 +1,12 @@
+/*
+Tic-Tac Toe
+by Humberto Rendon
+9/1/2022
+
+A simple tic-tac-toe game made with C. Allows you to go against a person or an AI.
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -72,7 +81,7 @@ int main(){
             break;
 
     }
-    
+
     free(board);
 
 }
@@ -610,8 +619,8 @@ int winAiDiagonal(char currentMark){
         else if(board[(i*LENGTH)+i] == currentMark){
             marks++;
         }
-            
-         if(marks==2 && empty == 1){
+    
+        if(marks==2 && empty == 1){
             placeMark(bestRow,bestCol,currentMark);
             return TRUE;
         }
