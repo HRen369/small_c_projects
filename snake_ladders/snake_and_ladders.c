@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define LENGTH 15
+#define LENGTH 10
 #define LEFT 4
 #define RIGHT 6
 
@@ -17,8 +17,10 @@
 
 void intializeBoard();
 void printBoard();
-int createSnakeBodyRow(int row, int directionStart, int prevColLength);
-int createSnakeColumnRow(int row,int directionStart, int bodyLength);
+
+int createSnakeColumnRow(int row, int bodyLength);
+int createSnakeBodyLeftToRight(int row, int start);
+int createSnakeBodyRightToLeft(int row, int start);
 
 char *board;
 time_t t;
@@ -29,25 +31,30 @@ int main(int argc, char *argv[]){
     board = (char*)malloc(LENGTH*LENGTH);
     intializeBoard();
 
-    int i,turn,prevBodyLength, prevColLength;
-    turn = prevBodyLength = prevColLength= i = 0;
+    int i,turn,prevLastCell, prevColLength;
+    turn = prevLastCell = prevColLength= i = 0;
     while(i < LENGTH){
-        if(turn == 0){
-            prevBodyLength = createSnakeBodyRow(i,LEFT,prevBodyLength);
+        switch (turn){
+        case 0:
+            prevLastCell = createSnakeBodyLeftToRight(i,prevLastCell);
             i++;
-        }
-        else if(turn == 1){
-            prevColLength = createSnakeColumnRow(i,LEFT,prevBodyLength);
+            break;
+        case 1:
+            prevColLength = createSnakeColumnRow(i,prevLastCell);
             i += prevColLength;
-        }
-        else if(turn == 2){
-            prevBodyLength += createSnakeBodyRow(i,RIGHT,prevBodyLength);
+            break;        
+        case 2:
+            prevLastCell = createSnakeBodyRightToLeft(i,prevLastCell);
             i++;
-        }
-        else{
-            prevColLength = createSnakeColumnRow(i,RIGHT,prevBodyLength);
+            break;  
+        case 3:
+            prevColLength = createSnakeColumnRow(i,prevLastCell);
             i += prevColLength;
             turn = -1;
+            break;       
+        default:
+            printf("ERROR!!!");
+            break;
         }
         turn++;
     }
@@ -68,45 +75,55 @@ void intializeBoard(){
     }
 }
 
-int createSnakeBodyRow(int row,int directionStart, int prevBodyLength){
-    int i;
-    int bodyLength = (rand() % (LENGTH-prevBodyLength))+1;
+int createSnakeBodyLeftToRight(int row, int start){
+    int i,rowLength,end;
+    i = rowLength = end = 0;
 
-    if(directionStart ==LEFT){
-        for(i=0;i<bodyLength;i++){
-            board[(row*LENGTH)+i] = SNAKE_BODY;
-        }    
+    rowLength = (rand() % LENGTH)+1;
+
+    end = start+rowLength;
+    
+    if(end > LENGTH){
+        end = start+(LENGTH-start);
     }
-    else{
-        int limit = prevBodyLength + bodyLength;
-        for(i=prevBodyLength-1;i< limit;i++){
-            board[(row*(LENGTH))+i] = SNAKE_BODY;
-        }        
-        
-        /*
-        for(i=LENGTH-bodyLength;i<LENGTH;i++){
-            board[(row*(LENGTH))+i] = SNAKE_BODY;
-        }*/
+
+    for(i=start;i<end;i++){
+        *(board + (row*LENGTH)+i) = SNAKE_BODY; 
     }
-    printf("%d ", bodyLength);
-    return bodyLength;
+
+    return i-1;
 }
 
+int createSnakeBodyRightToLeft(int row, int start){
+    int i,rowLength,end;
+    i = rowLength = end = 0;
+    rowLength = (rand() % LENGTH)+1;
 
-int createSnakeColumnRow(int row,int directionStart, int bodyLength){
-    int colLength = (rand() % 2)+1;
+    end = start-rowLength;
+    printf("start: %d, end: %d, rowLength: %d",start,end,rowLength);
 
-    int i;
-    for(i = 0;i<colLength;i++){
-        board[((row+i)*LENGTH)+bodyLength-1] = SNAKE_BODY;
+    if(end < -1){
+        end = -1;
     }
-    
+
+    for(i=start;i>end;i--){
+        *(board + (row*LENGTH)+i) = SNAKE_BODY; 
+    }
+
+    return i+1;
+}
+
+int createSnakeColumnRow(int row, int start){
+    int i,colLength;
+
+    colLength =1;// (rand() % 2)+1;
+
+    for(i=0;i<colLength;i++){
+        *(board + (row*(LENGTH+i))+start) = SNAKE_BODY; 
+    }
 
     return colLength;
-
-
 }
-
 
 void printBoard(){
     int i,j;
