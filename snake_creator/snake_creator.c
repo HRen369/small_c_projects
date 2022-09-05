@@ -1,5 +1,5 @@
 /*
-Snake and Ladders 
+Snake Creators 
 by Humberto Rendon
 9/5/2022
 
@@ -10,7 +10,7 @@ Currently only creates a snake wih the given length
 #include <stdlib.h>
 #include <time.h>
 
-#define LENGTH 10
+#define LENGTH 20
 #define LEFT 4
 #define RIGHT 6
 
@@ -41,6 +41,7 @@ int main(int argc, char *argv[]){
 
     int i,turn,prevLastCell, prevColLength;
     turn = prevLastCell = prevColLength= i = 0;
+    
     while(i < LENGTH){
         switch (turn){
         case 0:
@@ -66,6 +67,9 @@ int main(int argc, char *argv[]){
         }
         turn++;
     }
+
+    *(board) = SNAKE_HEAD;
+    *(board +(LENGTH*(LENGTH-1)+prevLastCell)) = SNAKE_TAIL;
 
     printf("\n");
     printBoard();
@@ -108,7 +112,6 @@ int createSnakeBodyRightToLeft(int row, int start){
     rowLength = (rand() % LENGTH)+1;
 
     end = start-rowLength;
-    printf("start: %d, end: %d, rowLength: %d",start,end,rowLength);
 
     if(end < -1){
         end = -1;
