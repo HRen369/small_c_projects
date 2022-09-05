@@ -1,3 +1,11 @@
+/*
+Snake and Ladders 
+by Humberto Rendon
+9/5/2022
+
+Currently only creates a snake wih the given length
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -116,10 +124,15 @@ int createSnakeBodyRightToLeft(int row, int start){
 int createSnakeColumnRow(int row, int start){
     int i,colLength;
 
-    colLength =1;// (rand() % 2)+1;
+    if(row == LENGTH-2){
+        colLength = 1;
+    }
+    else{
+        colLength = (rand() % 2)+1;
+    }
 
     for(i=0;i<colLength;i++){
-        *(board + (row*(LENGTH+i))+start) = SNAKE_BODY; 
+        *(board + (row+i)*LENGTH+start) = SNAKE_BODY; 
     }
 
     return colLength;

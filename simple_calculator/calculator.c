@@ -1,3 +1,10 @@
+/*
+Simple Calculator
+by Humberto Rendon
+9/1/2022
+
+A simple calculator that only does two operand functions
+*/
 #include <stdio.h>
 #include <stdlib.h>
 

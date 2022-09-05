@@ -1,3 +1,10 @@
+/*
+Hangman Game 
+by Humberto Rendon
+9/5/2022
+
+Play hangman over the console. Change the word to a difference word and then start
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>

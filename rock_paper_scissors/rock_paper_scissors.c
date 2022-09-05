@@ -1,3 +1,11 @@
+/*
+Rock,Paper,Scissors Game 
+by Humberto Rendon
+9/1/2022
+
+R,p,s game over the console.
+*/
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
